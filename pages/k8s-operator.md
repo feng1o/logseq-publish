@@ -1,0 +1,6 @@
+- ==summary-k8s-operator==
+	- [doc1](https://mdnice.com/writing/0b751c14fed34434808d1508a8d19efc)
+- Operator的主要目标是将工程师的逻辑转换为代码，以便实现原生Kubernetes无法完成的某些任务的自动化。
+- 系统如何运行、如何部署以及如何在出现问题时做出相应 <a class="ask"></a>将这些技术知识封装在代码中并自动化操作。比如Operator在Kubernetes中部署和维护mysql、es等工具，Operator可以配置这些工具，根据事件调整系统状态，并对故障做出反应。
+-
+-
