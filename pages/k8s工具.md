@@ -1,3 +1,0 @@
-- LENS可视化工具、通过.kube/config可直接接入
-- k9s命令行
-- {{embed ((64dc82de-6169-4cb6-aeb3-ff1ad64f9f05))}}

@@ -1,1 +1,0 @@
-- 进程[D状态问题](https://www.cnblogs.com/embedded-linux/p/7043569.html)
