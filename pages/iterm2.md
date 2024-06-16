@@ -1,0 +1,13 @@
+- iterm2--> install shell integration ---> 补全命令
+	- cmd + ;  自动列出命令
+	- cmd + shift + H  iterm2上的历史记录, 剪切板历史
+	- cmd + option + B 可以吧历史的命令重放、定位找记录
+- 修改主题： profile --- default -- color  --- input 导入，下载主题比较多
+- 设置status bar：  显示分支、time、网速等
+- 记录密码::  window 下有个password manager（记录密码);  自动打开： session - open password manager可以自动触发
+- highlight text等： preference --》 profile  ---》 advanced ---》 trigger ---》  highlight 即可
+- 修改option+ <--移动单词： 默认esc - b f可以，不方便
+	- preference--> profile/default---> key/mappings --> + 绑定option+ ->  send escape sequence + f/b. 然后就可以快速移动单词了
+- 修改tab选中的边框： profile -- advanced  / find  selected tab 里可以设置outline改为2、
+- mouse reporting:  in vim mode， scroll text by mouse。 打开后无法复制粘贴，可以mouse滚动文本
+- cmd + d 水平切，shift 垂直且；  cmd + [ 换

@@ -1,0 +1,56 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "file://",
+  "elements": [
+    {
+      "type": "freedraw",
+      "version": 5,
+      "versionNonce": 1742187634,
+      "isDeleted": false,
+      "id": "34jfeFL_lavYUey_pKpGH",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "x": 788.951171875,
+      "y": 310.9176025390625,
+      "strokeColor": "#000000",
+      "backgroundColor": "transparent",
+      "width": 1.01123046875,
+      "height": 2.02239990234375,
+      "seed": 1721876722,
+      "groupIds": [],
+      "strokeSharpness": "round",
+      "boundElementIds": [],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0.5
+        ],
+        [
+          1.01123046875,
+          2.02239990234375
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "simulatePressure": true,
+      "pressures": []
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#FFF"
+  }
+}

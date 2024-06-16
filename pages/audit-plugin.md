@@ -1,0 +1,1 @@
+- [官方8.0文档如何写audit plugin](https://dev.mysql.com/doc/extending-mysql/8.0/en/writing-audit-plugins.html)

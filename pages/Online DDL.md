@@ -1,0 +1,30 @@
+- ### Q1: Online DDL 会不会锁表 [#](http://mysql.taobao.org/monthly/2021/03/06/)
+	- > Online DDL 并不是绝对安全，更不是可以随意的执行。线上操作还是需要在业务低峰期谨慎操作。
+	- Online DDL 会不会锁表？要回答这个问题，首先要明确“锁表”的含义。很多 MySQL 用户经常在表无法正常的进行 DML 时就觉得是锁表了，这种说法其实过于宽泛，实际上能够影响 DML 操作的锁至少包括以下几种（默认为 InnoDB 表）：
+	- MDL 锁
+	- 表锁
+	- 行锁
+	- GAP 锁
+	- 其中除了 [[MDL]] 锁是在 Server 层加的之外，其它三种都是在 InnoDB 层加的。具体的加锁逻辑不在此进行展开，但是需要明确一点：所有的操作（不管是 DDL 还是 DML 还是查询语句）都需要先拿 Server 层的 [[MDL]] 锁，然后再去拿 InnoDB 层的某个需要的锁。[[$red]]==一个 [[DDL]] 的基本程是这样的==：
+		- 首选，在开始进行 [[DDL]] 时，需要拿到对应表的 [[MDL]] X 锁，然后进行一系列的准备工作；
+		- 然后将 MDL X 锁降级为 [[MDL]] S 锁，进行真正的 DDL 操作；
+		- 最后再次将 MDL S 锁升级为 MDL X 锁，完成 DDL 操作，释放 MDL 锁；
+- ### Q2: 支持 INPLACE 算法的 DDL 一定是 Online 的 [[inplace DDL]]
+	- COPY 是在 Server 层的操作，INPLACE 是在 InnoDB 层的操作。而用户更加关心 Online 与否，通常只与一个问题有关：是否允许并发 DML。两个基本结论：
+		- COPY 算法执行的 DDL 肯定不是 Online 的；
+		- INPLACE 算法执行的 DDL 不一定是 Online 的；
+- ### Q3: [[INPLACE DDL]] 需不需要额外的数据空间  [#](http://mysql.taobao.org/monthly/2021/03/06/)
+	- COPY 算法理解起来相对简单一点：创建一张临时表，然后将原表的数据拷贝到临时表中，最后再用临时表替换原表。
+	- inplace也是要空间，是临时文件，超过1T不一定ok
+	- 实际上，很多 INPLACE [[DDL]] 都会重建表（会创建临时数据文件），所以都会需要额外的数据空间，例如：
+		- 增加主键
+			- 重建主键
+			- 新增列（8.0 支持 INSTANT DDL，不需要）
+			- 删除列
+			- 调整列顺序
+			- 删除列默认值
+			- 增加列默认值
+			- 修改表的 ROW_FORMAT
+			- OPTIMIZE 表
+-
+	-

@@ -1,0 +1,25 @@
+- Env
+	- [install.sh](https://note.youdao.com/s/YiXeC0At)
+- resource
+	- [KM-to see](https://LW1rLXdhLWNtLQo=/group/36127/articles/show/490081?kmref=search&from_page=1&no=2)
+	- [flink-b站优化- 动态sink-kafka  UDF](https://www.51cto.com/article/705945.html)
+	- [[flink-backpresure]]
+- <a class=ask> slot 相关问题</a>
+	- #### Flink组件 [doc](https://blog.51cto.com/u_15179348/2734107)
+		- 一个 Flink Cluster 是由一个 Flink Master 和多个 Task Manager 组成的，一个 Flink Master 中有一个 Resource Manager 和多个 Job Manager。
+			- Flink Master 中每一个 Job Manager 单独管理一个具体的 Job。
+				- Job Manager 中的 Scheduler 组件负责调度执行该 Job 的 DAG 中所有 Task，发出资源请求，即整个资源调度的起点；
+				    JobManager 中的 Slot Pool 组件持有分配到该 Job 的所有资源。
+		- Task Manager 负责 Task 的执行，其中的 Slot 是 Task Manager 资源的一个子集，也是 Flink 资源管理的基本单位，Slot 的概念贯穿资源调度过程的始终
+		- Flink Master 和 Task Manager 是进程级组件，其他的组件都是进程内的组件
+	- Slot由来:: Flink 默认会将能链接的算子尽可能地进行链接，也就是算子链，flink 会将同一个算子链分组内的subtask都发到同一个slot去执行，也就是说一个slot可能要执行多个subtask，即多个线程
+		- 在 多线程处理 的 TaskManager 的内部是：在不同的线程上去执行一个或者多个它的子任务。而这个线程到底能执行多少个子任务呢？
+		- 为了控制内部线程运行子任务的个数，即为了控制一个 TaskManager 能接受多少个 task，就提出了slots概念。slots就是TaskManager的固定大小资源的一个集合。ResourceManager在做资源分配管理的时候，最小的单位就是slot
+		- ![image.png](../assets/image_1660212589447_0.png){:height 416, :width 436}
+- Todo:
+	- https://www.51cto.com/article/705945.html  udf 动态sink 远程存储加载udf实现和使用场景
+- [[flink Table-API 和 SQL]]
+- [[ETL]]
+	- commmon:: ETL，Extract-Transform-Load
+- [[规则审计]]
+- [[checkpoint]]

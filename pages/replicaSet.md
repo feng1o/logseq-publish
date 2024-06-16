@@ -1,0 +1,7 @@
+- replicaSet是k8s里的副本控制器，管理pod，保证pod数量不变，比如pod异常了会重启pod，pod少了会重新运行新的pod副本。推荐用deployment，但deplyoment是管理rs的，ds是声明式的不会丢
+- 比如pod更新:
+	- 修改yaml文件的image或者使用kubectl edit命令修改镜像只会影响新生成的pod，对原先的pod没有影响，只能删除原先的pod才能完成版本更新
+	- 如果是生产环境升级，只能手动删除pod重建一个一个来. 不具备滚动更新能力
+	-
+	-
+-

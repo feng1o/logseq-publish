@@ -1,0 +1,21 @@
+- [存储分类-介质-产品应用](https://www.yanrongyun.com/zh-cn/blogs/k8s-container-persistant-storage)
+  id:: 648ac972-6179-4b18-9890-9d28aaccf945
+	- 从存储介质角度
+		- 机械硬盘和固态硬盘（SSD）。机械硬盘泛指采用磁头寻址的磁盘设备，包括SATA硬盘和SAS硬盘。由于采用磁头寻址，机械硬盘性能一般，随机IOPS一般在200左右，顺序带宽在150MB/s左右。固态硬盘是指采用Flash/DRAM芯片+控制器组成的设备，根据协议的不同，又分为SATA  SSD，SAS SSD，PCIe SSD和NVMe SSD。
+	- 从产品定义角度
+		- 存储分为本地存储（DAS），网络存储（NAS），存储局域网（SAN）和软件定义存储（SDS）四大类。
+		- DAS就是本地盘，直接插到服务器上
+		- NAS是指提供NFS协议的NAS设备，通常采用磁盘阵列+协议网关的方式
+		- SAN跟NAS类似，提供SCSI/iSCSI协议，后端是磁盘阵列
+		- SDS是一种泛指，包括分布式NAS（并行文件系统），ServerSAN等
+	-
+	- 从应用场景角度，
+		- 存储分为文件存储（Posix/MPI）
+		- 块存储（iSCSI/Qemu）
+		- 对象存储（S3/Swift）三大类
+		-
+	- Kubernetes是如何给存储定义和分类呢？Kubernetes中跟存储相关的概念有PersistentVolume （PV）和PersistentVolumeClaim（PVC），PV又分为静态PV和动态PV。静态PV方式如下：
+-
+- 阵列卡就是raid卡； HBA卡：HBA卡就是直通卡，也能做raid，但性能不行
+	- HBA卡就是一个通道卡，它的作用是让计算机能够对硬盘进行直接管理和使用，一般都是针对sas硬盘，可以看成是sas控制器，而sas是兼容SATA的，所以SATA硬盘也可以用
+	-

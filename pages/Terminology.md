@@ -1,0 +1,15 @@
+- 运营数据
+	- DAU [[$sub8-blue]]==Daily Active User==
+	- MAU  [[$sub8-blue]]==Monthly Active User==
+	- UGC [[$sub8-blue]]==User-generated Content==
+	- UV  独立访客、Unique Vister
+	- PV  页面被访问多少次、Page View
+	- RV 重复访客
+	- PCU 最高同时在线人数
+	- ROI 投资回报率
+	- GMV   Gross Merchandise Volume，销售额GMV指用户在某网站或产品的成交额。
+- 产品项目类
+	- UE    User Experience ，包括对用户的引导、交互、用户在使用过程中的感受等等一系列的东西。
+	- PRD   Product Requirement Document，做成什么样？
+	- MVP  Minimum Viable Product ，一种产品理论，它的重点就是制作的成本要极低，但是却能展示最终产品的主要特色
+	-

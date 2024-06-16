@@ -1,0 +1,23 @@
+- #### framework能力 [doc](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=284289117)
+	- ##### 1.调用类型
+		- 协议： rpc 、http、泛http-rpc、存储协议：mysql redis   MQ: kafka ....
+	- ##### 2.调用流程
+	- ##### 3.治理能力
+		- 服务寻址
+		- [多环境路由](https://LWlrLW9hLXRjdC1jbS0K/pages/viewpage.action?pageId=99485673)
+		- [调用超时控制](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=99485688)
+		- [拦截器机制](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=274914183)，实现包括 [认证鉴权](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=99485623)，调用链跟踪，监控上报，[重试对冲](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=429400811)....
+		- [远程日志](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=465532424)
+		- [配置中心](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=443605268)
+- #### 开发向导
+	- ##### 1.开发模式
+		- 既作为服务端也作为client    --    和server一样有自己的配置等
+		- 纯客户端小工具请求，常见于开发运维小工具的场景    ----     无配置，伪装主动初始化一个
+	- ##### 2.接口调用
+		- 框架为每个服务都定义了一个“ClientProxy”，“ClientProxy”会提供服务调用的桩函数，用户只需要像调用普通函数一样调用桩函数即可 ----  proto生成服务代码时就已经自动生成
+	- ##### 3.option
+		- 即client的参数，就是functional compiler的一个使用
+	- ##### 4.client的一些配置
+		- 比如需要通知到server的地址，使用host还是域名、或其他服务发现
+		- 不同寻址有不同的初试化方式等
+	- ##### 5. plugin选择、调用方式(同步异步)、其他超时等....

@@ -1,0 +1,5 @@
+- [list-doc](https://www.infoq.cn/theme/46)
+- 大部分db都是分离data和meta data， 提供类似：information-schema的功能 001
+- 关系模型定义了所有的数据都是以元组(tuple)的形式存在，每个元组定义了多个属性(attribute)的键值对，多个含有相同属性的元组排列在一起就形成了一个关系(relation)。元组，属性和关系对应到数据库中的概念就是行(row)，列(column), 和表(table)
+- [执行模式](https://www.infoq.cn/article/spfiSuFZENC6UtrftSDD) 即一个sql倍解析为语法书、语义、优化器优化有到执行引擎执行过程
+-

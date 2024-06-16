@@ -1,0 +1,17 @@
+- [go-server开发向导](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=284289102)
+	- #### 1.**协议选择、服务定义、业务开发、插件/拦截器选择、测试手段** 这条开发路线来展开如何开发
+	- #### ==2.协议服务==
+		- 支持 **tRPC服务**，**tRPC流式服务**，**泛HTTP RPC服务** 和 **泛HTTP标准服务**。
+			- 泛HTTP RPC服务是RPC框架自行设计的一套基于泛HTTP协议的rpc模型，其协议细节都已在框架内部封装， 对用户来完全透明  --- 框架封装了路由，proto定义alias指定，用rpc写
+			- 泛HTTP标准服务在使用上跟golang http标准库一模一样，由用户自行定义handle请求函数，自行注册http路由，自行填充http head等。标准http服务不需要IDL协议文件
+	- ####  3. 定义Naming Service
+		- server地址
+	- #### 4.proto service
+		- IDL 通过proto定义生成
+		- 非IDL比如http和原生net一致 router注册
+		- 多服务注册   配置里启动对应plugin的服务
+	- #### 5.各类服务开发
+	- #### 6.框架配置
+	- #### 7.plugin选择
+	- #### 8.高级feature
+-

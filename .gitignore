@@ -1,0 +1,7 @@
+log.log
+log.push
+pages/.idea
+logseq/.recycle
+logseq/bak
+pages/*skip-sync.md
+hide-msg.sh

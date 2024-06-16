@@ -1,0 +1,4 @@
+- run模式下打桩启用： go test -v -gcflags=all=-l ./...选加参数； debug下无需;  //go:noinline阻止inline一样ok
+- stub与mock的区别: stub和mock是两种最常见的打桩手段，它们都能够用来替换次要测试对象，从而实现对一些复杂依赖的隔离，但是它们在实现和关注点上又有所区别
+	- Mock：在测试包中创建一个结构体，满足某个外部依赖的接口 interface{}
+	- Stub：在测试包中创建一个模拟方法，用于替换生成代码中的方法

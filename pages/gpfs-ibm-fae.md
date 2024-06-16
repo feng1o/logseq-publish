@@ -1,0 +1,108 @@
+- **常见问题处理**
+- <!--[if !supportLists]-->· <!--[endif]-->ECE RoCE模式下，一个server port 离线 很久再上线，旧的remote client 不会自动建立与重新上线的RDMA port?  这个内部逻辑是什么样的？
+- 会重新连接
+- <!--[if !supportLists]-->· <!--[endif]-->有时候mmfsd cpu高，业务进程D住，有什么方式知道mmfsd正在执行什么？ mmfsad dump waiters之外还有什么GPFS系统查询方式?
+- mmfsad dump thread
+- <!--[if !supportLists]-->· <!--[endif]-->集群哪些操作需要rpc通信到客户端侧，rpc如果超时，是否有超时逻辑
+- some of RPCs have timeout mechanism, but some of RPCs need to be replies communication, such as token revoke, metanode operations, need to communicate with clients
+-
+- **集群状态管理**
+- 节点探活的基本原理介绍
+  请参考SSUG19UK-Day-2-B10-IBM-Spectrum-Scale-Network-Related-Flows-and-Troubleshooting.pdf
+- 培训后下列问题我们可以得到解答，培训内容不限于下列的问题。
+- <!--[if !supportLists]-->· <!--[endif]-->Lease 是如何判断的，周期，timeout时长等，如何判断节点需要被expell；
+- Disk lease相关的配置参数比较多，我们在user group上给过一个文档，详细的讨论了这部分内容，具体可以参考文档：
+- [https://www.spectrumscaleug.org/wp-content/uploads/2019/05/SSUG19UK-Day-2-B10-IBM-Spectrum-Scale-Network-Related-Flows-and-Troubleshooting.pdf](https://www.spectrumscaleug.org/wp-content/uploads/2019/05/SSUG19UK-Day-2-B10-IBM-Spectrum-Scale-Network-Related-Flows-and-Troubleshooting.pdf)
+- <!--[if !supportLists]-->· <!--[endif]-->Remote mount的情况下，服务端集群的节点出现异常，是怎么检测出来的，会有事件通知吗？
+- 节点异常通常跟网络相关，比如节点的网络原因导致disk lease overdue，然后节点被expel，这种情况可以参考上面的文档。其它的异常比如long waiter需要具体问题具体分析。
+- <!--[if !supportLists]-->· <!--[endif]-->节点状态对OS系统盘的依赖情况，OS系统盘慢，会导致节点状态异常吗？
+- 有可能会导致异常，如果是记录lease信息的本地文件系统IO hang可能会导致节点被expel。
+- <!--[if !supportLists]-->· <!--[endif]-->节点状态对网络的依赖情况，例如：丢包会导致节点expell吗？
+- 严重丢包可能会导致节点expel。
+- <!--[if !supportLists]-->· <!--[endif]-->节点状态对CPU的繁忙的依赖情况，例如：短暂的CPU高，会导致节点状态异常吗？
+- 这个一般不会。
+- <!--[if !supportLists]-->· <!--[endif]-->例如：/var/mmfs/gen/LastLeaseRequestSent 写盘时，盘繁忙，会导致节点状态异常？
+- 本地IO长时间hang会导致expel，参考上面的问题。
+- <!--[if !supportLists]-->· <!--[endif]-->节点处于arbitrating状态时正在做什么，一般耗时多久？
+- arbitrating状态时节点在probe cluster，尝试加入cluster，这个过程中节点会不停尝试连接quorum node，如果需要的话节点会发起选举，这个过程一直重试，直到碰到错误或最终加入到cluster。
+- <!--[if !supportLists]-->· <!--[endif]-->什么情况下节点会被驱逐出集群？
+- 多种情况会导致节点expel，比如disk lease overdue, node expel request, mmexpelnode命令等，具体可以参考上面的pdf文件。
+- <!--[if !supportLists]-->· <!--[endif]-->文件系统元数据的分布是什么样子的，inode如何选择节点?
+- GPFS的meta数据包含很多种类，在磁盘上的分布情况基本跟普通文件类似，只是对用户不可见。inode不会选择节点，是在节点上生成inode号。
+- <!--[if !supportLists]-->· <!--[endif]-->什么情况下client的状态（譬如与server节点网络异常）会直接影响到整个存储集群的使用
+- 一般一个client的异常不会影响到其它的节点，除非其它节点和这个节点访问相同的数据。另外如果client节点发生异常导致无法做fs recovery，可能会导致其它节点无法加入cluster。
+-
+- **FileManager Token**
+- FileManager内部基本原理介绍
+- GPFS token主要用于多节点间访问相同资源时进行互斥，保证数据或者状态的一致性。
+- 培训后下列问题我们可以得到解答，培训内容不限于下列的问题。
+- <!--[if !supportLists]-->· <!--[endif]-->多client节点写入相同目录不同文件，Token如何处理；
+- 各节点写各自的文件，可以拿到各自文件的相关token，同时处理。
+- <!--[if !supportLists]-->· <!--[endif]-->多client节点写入相同目录同一个文件，Token如何处理；
+- 如果写入同一文件的不同部分，可以拿到各自区域的token，同时处理；对于相同的部分，GPFS会利用token进行互斥，在同一时刻只有一个节点可以写入，完成后，token会转给另外的节点，让其写入。
+- <!--[if !supportLists]-->· <!--[endif]-->多client节点写入相同目录同一文件不同位置时，Token如何处理；
+- 如上回答
+- <!--[if !supportLists]-->· <!--[endif]-->多client节点在同一个目录下创建文件，Token如何处理；
+- 在目录下创建文件需要更改该目录的相关元数据信息，多个节点同时创建文件时，对这部分元数据信息的修改需要使用token进行互斥，一个节点更改完成后，会将token转給其他节点，让其写入。
+- <!--[if !supportLists]-->· <!--[endif]-->Token request/revoker 对性能的影响
+- 对于互斥资源的更改，都需要拿到token之后才可以进行。如果多个节点同时操作互斥资源，对性能是有影响的。
+-
+- **ECE****数据读写过程**
+- 写I/O数据从用户到落盘的流程介绍
+- Gpfs client发数据到nsd server，nsd server也就是vdisk server收到数据根据数据大小处理不同。
+- 1 小数据，会以log个形式先落盘，然后buffer中的脏数据会后台flush
+- 2 Full block数据会新分配空间，数据根据条带个数分城各个条带发送给对应的pdisk server.
+-
+- 读数据是的时候，gpfs client给某个nsd disk的nsd server发read请求。如果数据已经在nsd server（vdisk server）的buffer里则nsd server可以直接返回数据。否则nsd server（vdisk server）把地址转换为EC的 数据track。从track得到每个条带对应的pdisk和条带的地址，然后给对应的pdisk server发送读请求。
+-
+- 培训后下列问题我们可以得到解答，培训内容不限于下列的问题。
+- <!--[if !supportLists]-->· <!--[endif]-->ECE模式跟普通的模式，哪些功能是不一样的，哪些功能是复用的；
+- ECE多了块设备管理层来实现EC。在文件系统层名和普通模式基本一致。
+- <!--[if !supportLists]-->· <!--[endif]-->VDisk/Pdisk的映射关系，Log Group的作用等；
+- VDisk/Pdisk的映射关系这个比较复杂了，一句话说不清楚。(之前转到群里的xuwu分享的ppt里有相关内容，请查阅)
+- Log Group的作用我理解是方便管理vdisk，比如vdisk server失效后，vdisk应该怎么迁移。以及把data vdisk和log vdisk对应起来。
+- <!--[if !supportLists]-->· <!--[endif]-->Buffer I/O 在 pagepool 中有哪些过程，pagepool满时会怎么样；
+- <!--[if !supportLists]-->· <!--[endif]-->小文件的I/O写入full block时，又没有占满这个block，缩回的流程是怎么样的；
+- <!--[if !supportLists]-->· <!--[endif]-->创建文件时申请Inode经历了哪些过程，有哪些全局mutex;
+- <!--[if !supportLists]-->· <!--[endif]-->workThread线程数多少与读预取的激烈程度的内部逻辑；
+- <!--[if !supportLists]-->· <!--[endif]-->Remoute client是 TCP网络，  Local cluster是RDMA + TCP网络，所以从Remoute Client过来的IO是通过TCP写入某个Local cluster node， local cluster node再在集群内通过RDMA发送条带到其他 nsd server？
+- **Deadlock **
+- Deadlock 自愈机制或者恢复机制介绍
+- [https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=troubleshooting-managing-deadlocks](https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=troubleshooting-managing-deadlocks)
+-
+- 培训后下列问题我们可以得到解答，培训内容不限于下列的问题。
+- <!--[if !supportLists]-->· <!--[endif]-->Deadlock如何自愈 （超时？重启？）；
+- <!--[if !supportLists]-->· <!--[endif]-->Deadlock是否可以配置告警或者自动处理脚本；
+- <!--[if !supportLists]-->· <!--[endif]-->有哪些常见场景会造成deadlock？
+- **磁盘状态****/****数据均衡**
+- 培训后下列问题我们可以得到解答，培训内容不限于下列的问题。
+- 磁盘状态的判断的基本逻辑介绍
+- <!--[if !supportLists]-->· <!--[endif]-->副本模式正常关闭节点（ECS + 云盘），GPFS磁盘状态概率出现unkown, unrecover状态；
+- 正常不会无法出现unkown, unrecover状态，如果有这种情况，请提ticket。
+- <!--[if !supportLists]-->· <!--[endif]-->重启节点的mmfsd进程之后，挂载点概率出现无法恢复的状态；
+- 正常不会无法恢复，如果有这种情况，请提ticket。
+- <!--[if !supportLists]-->· <!--[endif]-->ECE模式是否可以支持缩容，比如永久删除一个节点；
+- ECE模式仅支持删掉节点的缩容，比如删除一个节点；但是不支持每个ECE node上去掉几个盘
+-
+- **数据流动**
+- 培训后下列问题我们可以得到解答，培训内容不限于下列的问题。
+- 数据流动基本原理和各种模式简介
+-
+- AFM COS基本原理：[https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=overview-introduction-afm-cloud-object-storage](https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=overview-introduction-afm-cloud-object-storage)
+-
+- AFM COS的工作模式：[https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=storage-afm-cloud-object-operation-modes](https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=storage-afm-cloud-object-operation-modes)
+-
+- <!--[if !supportLists]-->· <!--[endif]-->fileset如何选取gateway？
+- AFM fileset的gateway node的选取有几种不同的hash算法：[https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=concepts-primary-gateway-afmhashversion](https://www.ibm.com/docs/en/spectrum-scale/5.1.7?topic=concepts-primary-gateway-afmhashversion)
+- <!--[if !supportLists]-->· <!--[endif]-->dropped状态时正在执行什么操作？
+- After afmHardMemThreshold reached, the fileset goes into a 'dropped' state. Exceeding the limit and the fileset going into a 'dropped' state due to accumulated pending requests might occur if –
+- *the cache cluster is disconnected for an extended period of time.
+- *the connection with the home cluster is on a low bandwidth.
+- <!--[if !supportLists]-->· <!--[endif]-->如何做到gateway的高可用以及任务高可用？推荐方案
+- 我理解AFM自身会实现gateway role在gateway节点之间的failover
+- <!--[if !supportLists]-->· <!--[endif]-->文件的列表的获取方式？
+- 应该是使用的对象存储的list相关的API
+- <!--[if !supportLists]-->· <!--[endif]-->如何判断文件的新旧？
+- 不是很清楚这里文件的新旧指的是什么？
+- <!--[if !supportLists]-->· <!--[endif]-->lu模式有没有一些大规模的实践case？在lu模式下，如何作到修改了本地文件的状态后（状态变为dirty）对象到本地文件系统的导入功能可用（这个模块是否有产品化思路）
+- lu模式下，本地文件修改之后，应该就无法再从对象存储里导入了。

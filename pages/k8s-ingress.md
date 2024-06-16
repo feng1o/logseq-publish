@@ -1,0 +1,13 @@
+- [ingress解决什么问题呢？](https://blog.haohtml.com/archives/19945)
+	- 比如service要在集群外部方位，那要么挂lb，或者测试用nodeport，那如果每个svc都有一个lb如何管理？非常麻烦，那就需要一个全局的负载均衡，然后通过这个统一的域名访问，不通的url映射到后端不通的svc； 简单理解那ingress就是svc的service了
+	- ![](https://blogstatic.haohtml.com/uploads/2021/04/d2b5ca33bd970f64a6301fa75ae2eb22-8.png)
+- Ingress和Service的区别？
+	- 都是用于构建和管理应用程序的网络服务的重要组件，两者的作用不同。
+	- **Service**: 是Kubernetes中一个抽象的概念，用于定义一组Pod的访问方式和网络访问规则。Service通常用于在内部网络中提供可靠的负载均衡机制，如将服务映射到固定的端口。
+	- **Ingress**: 是一种Kubernetes资源对象，用于从集群外部公开HTTP和HTTPS路由，以便在单个IP上托管多个域。Ingress充当入口控制器，允许网络流量从外部进入集群，并将其路由到正确的Service上。
+	- Ingress与Service之间的关系是，Ingress控制器将HTTP/HTTPS流量路由到正确的Pods/Services，而Service则负责在Kubernetes集群中负载均衡流量。Ingress允许用户以URL路径或主机名为基础定义和路由HTTP和HTTPS流量，允许HTTP和HTTPS在同一IP和端口上进行处理，从而简化了网络架构。
+	- 七层、四层代理区分？
+		- **Service** 控制和管理四层（传输层）的网络流量，主要依靠负载均衡器在多个Pod之间分发请求，使用 IP 和端口来处理网络流量。Service 的负载均衡器只能识别传输层的网络信息，如IP地址和端口号，无法处理应用程序层（七层）的请求。
+		- **Ingress** 控制和管理七层（应用层）的网络流量，通过一个 API 对象，将流量路由到正确的 Pod 和 Service 上。Ingress 可以根据应用程序层协议（http/https）、请求头、请求类型、URL路径等条件来处理网络流量Ω
+- Ingress 有哪些实现方式？
+	- nginx-ingress、 istio ingress

@@ -1,0 +1,13 @@
+- BookKeeper是一个通用的分布式日志存储解决方案 [DOC](https://blog.51cto.com/apachepulsar/3535782)
+	- 1:: BookKeeper将数据存储至集群中的节点上；每个BookKeeper节点称为Bookie。Pulsar和BookKeeper都使用Apache Zookeeper来存储元数据和监控节点健康状况
+	  2:: client --> broker ---> store 到bookie
+	- ` 一个Topic实际上是一个ledgers流。Ledger本身就是一个日志。所以一系列的子日志(Ledgers)组成了一个父日志(Topic)。`
+	- `Ledgers追加到一个Topic，条目(消息或者一组消息)追加到Ledgers。Ledger一旦关闭是不可变的。Ledger作为最小的删除单元，也就是说我们不能删除单个条目而是去删除整个Ledger; Ledgers本身也被分解为多个Fragment。Fragment是BookKeeper集群中最小的分布单元(`
+	- `每个Ledger(由一个或多个Fragment组成)可以跨多个BookKeeper节点(Bookies)进行复制，以实现数据容灾和提升读取性能`
+	- ![image.png](../assets/image_1665663294109_0.png){:height 336, :width 314}
+- messageID: `ledgerId:entryID:partition-index:batch-index` [doc](https://LWN0Y3QtY20tCg==/document/product/1179/59117)
+	- 1:: partition-index：指分区的编号；在非分区 topic 的时候为
+	- 2:: xbatch-index：在非批量消息的时候为 -1
+	- 3:: ledger实际就是写入的某个open的ledger可写入(不是borker！)；找到ledger后生成写入的消息entryID； etryId这个id在同一个ledger内是递增的；每个 ledger 存在的时长或保存的 entry 个数超过阈值后会进行切换；新的消息会存储到同一个 partition 中的下一个 ledger 中;  批量中entryID一个包含多个消息
+	- ![image.png](../assets/image_1665662404486_0.png){:height 205, :width 389}
+	- <span class="subw8">Pulsar 中每个分区 Topic 的消息数据以 ledger 的形式存储在 BookKeeper 集群的 bookie 存储节点上，每个 ledger 包含一组 entry，而 bookie 只会按照 entry 维度进行写入、查找、获取</span>

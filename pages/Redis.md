@@ -1,0 +1,3 @@
+- ==summary-redisk==
+	- [path-geek](http://kaito-kidd.com/2020/09/09/how-i-learned-redis/)
+	- [path-complete](https://bbs.huaweicloud.com/blogs/303879)

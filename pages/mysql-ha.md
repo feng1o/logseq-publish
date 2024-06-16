@@ -1,0 +1,11 @@
+- ha的分类，旁路式和自身嵌入式
+	- 旁路: 简单
+	- 集群自身的能力： 需要业务感知底层ip的变化切换
+- 常用HA组件演进
+	- MHA
+		- Master High Availability，它为 MySQL 主从复制架构提供了 automating master failover (自动化故障转移) 功能。直接选择最新的slave
+		- 包含manager和node，MHA的node和manager的通信通过ssh
+	- [MGR](https://jicki.cn/mysql-mgr-cluster/)**([MySQL Group Replication](https://blog.51cto.com/u_15080019/2641962))** [[$sub8-blue]]==一个MySQL Server插件, 可用于创建弹性, 高可用MySQL集群方案==，[[$sub8-gray]]==一种基于**shared-nothing**的，更方便实现数据**一致性**及**高可用**集群方案，此外它还支持**故障自动检测**及**多节点并行写**等特性==
+		- Group Replication由至少3个或更多个节点共同组成一个数据库集群，基于分布式一致性算法Paxos实现，事务的提交必须经过半数以上节点同意方可提交，在集群中每个节点上都维护一个数据库状态机，保证节点间事务的一致性。
+		- 建立在基于 `Paxos` 的 `XCom` 之上的, 正因为有了`XCom`基础设施, 保证数据库状态机在节点间的事务一致性, 才能在理论和实践中保证数据库系统在不同节点间的事务一致性。
+		- 与原有复制方式相比，主要增加了certify的概念；certify模块主要负责检查事务是否允许提交，是否与其它事务存在冲突，如两个事务可能修改同一行数据。在单机系统中，两个事务的冲突可以通过封锁来避免。

@@ -1,0 +1,53 @@
+- [paper](https://dl.acm.org/doi/pdf/10.1145/2882903.2903741)
+- ![The Snowflake Elastic Data Warehouse.pdf](../assets/The_Snowflake_Elastic_Data_Warehouse_1655113824281_0.pdf)
+- https://zhuanlan.zhihu.com/p/464135327 <span  class='alg-4stars'>1</span>
+- https://pingcap.com/zh/blog/new-ideas-for-designing-cloud-native-database tidb云原生数据库趋势
+- https://developer.aliyun.com/article/789944
+- https://zhuanlan.zhihu.com/p/56745552  -- 概述性
+- https://fuzhe1989.github.io/2020/12/28/the-snowflake-elastic-data-warehouse/  特性-架构特点-share-nothing优缺点
+- https://zhuanlan.zhihu.com/p/55577067 -- 和前面差不多
+- https://www.bilibili.com/video/BV1oK41137AX?spm_id_from=333.337.search-card.all.click&vd_source=249f61d30b660d344f2a5b626a2ac64f -- 5分钟解读paper
+- https://mp.weixin.qq.com/s/eEepwg51C8gAQGWn6ndUqQ
+- https://zhuanlan.zhihu.com/p/366136463  snowflake产生背景介绍  https://mp.weixin.qq.com/s/iOxJAj-lBtuwfx8h9hB6BA  创始人，价值分析
+-
+-
+- https://www.cnblogs.com/gered/p/14899327.html 细节
+- https://zhuanlan.zhihu.com/p/54439354 架构分析看
+-
+- 框架
+	- 介绍数据库发展历史--概论 {{embed ((62a6e050-7ac7-4e5e-bc25-57bfa3845c7d)) }}
+		- 单机db
+		- 中间件
+			- 基本上整个主流模式有两种
+				- 一种是在业务层做手动的分库分表，比如数据库的使用者在业务层里告诉你；北京的数据放在一个数据库里，而上海的数据放在另一个数据库或者写到不同的表上，这种就是业务层手动的最简单的分库分表，相信大家操作过数据库的朋友都很熟悉。
+				- 第二种通过一个数据库中间件指定 Sharding 的规则。比如像用户的城市、用户的 ID、时间来做为分片的规则，通过中间件来自动的分配，就不用业务层去做。
+			- 优点就是简单。如果业务在特别简单的情况下，比如说写入或者读取基本能退化成在一个分片上完成，在应用层做充分适配以后，延迟还是比较低的，而整体上，如果 workload 是随机的，业务的 TPS 也能做到线性扩展。
+			- 缺点。复杂业务、跨分片的操作，比如说查询或者写入要保持跨分片之间的数据强一致性的时候就比较麻烦。另外一个大型集群的运维困难，特别是去做一些类似的表结构变更之类的操作。想象一下如果有一百个分片，要去加一列或者删一列，相当于要在一百台机器上都执行操作，其实很麻烦。
+		- NoSQL
+			- 最有名的系统就是 MongoDB，MongoDB 虽然也是分布式，但仍然还是像分库分表的方案一样，要选择分片的 key，他的优点大家都比较熟悉，就是没有表结构信息，想写什么就写什么，对于文档型的数据比较友好，但缺点也比较明显，既然选择了 Sharding Key，可能是按照一个固定的规则在做分片，所以当有一些跨分片的聚合需求的时候会比较麻烦，第二是在跨分片的 ACID 事务上没有很好的支持。非SQL，支持的数据结构更丰富
+			- NoSQL的设计初衷是把scale out放在第一位，放宽或者放弃事务性的约束，简化数据模型，快速解决数据量爆炸的问题;
+			- NoSQL一般不存在跨sharding的计算，计算层非常简单;而对于NewSQL，或者OLAP的数据仓库而言，要支持跨sharding的操作，要支持SQL的众多语义，计算层会复杂很多
+		- share nothing
+			- Sharding 其实就是Share Nothing，它是把某个表从物理存储上被水平分割，并分配给多台服务器（或多个实例），每台服务器可以独立工作，具备共同的schema，比如MySQL Proxy和Google的各种架构，只需增加服务器数就可以增加处理能力和容量。
+			- share nothing的架构只解决了扩展性问题，还有一些技术难点不好解决，比如数据复制和一致性
+			- 缺点在于，相比较与前面两种模式，多个node之间的通讯开销就会变得很大。协调这些node也会带来很多overhead。同时对于数据库的一致性也有更多的挑战，如果在平行数据库Shared Nothing模式下，data被partition到每个node的disk，那么所有数据就只有一份，如果数据不在本地而该node又想访问的化，只好去对应的disk拿（当然，更好地做法是，把每一个数据都partition到每个disk，比如把table的平均切分到每个disk，然后再merge结果这样就保证了每个节点都可以进行操作，这其实就是mapreduce的做法，也难怪在mapreduce刚出的时候很多DB领域的大佬对它嗤之以鼻）。如果数据在多个节点同时拥有备份，那么就要额外的同步机制[Sync]来确保数据一致性
+			-
+		- share disk  --  snowflake怎么优化性能的？ [5分钟](https://www.bilibili.com/video/BV1oK41137AX?spm_id_from=333.337.search-card.all.click&vd_source=249f61d30b660d344f2a5b626a2ac64f)
+			- local caching   -- vmwarehouse有ssd
+			- file stealing  -- 多个节点平衡，a快会去b上请求一部分
+			- storage存储  ---  表格文件，列示存储
+			- 打个比方来说：
+				- 把mysql的innodb做成分布式，就是share storage
+				- 把innode的磁盘做成EBS，就是share diskshare disk是硬件加速，实现简单些，share storage实现更复杂
+	- snowflake介绍
+	- snowflake架构 https://zhuanlan.zhihu.com/p/464135327  ``Snowflake在Shared-nothing的基础上提出了Multi-Cluster, Shared Data Architecture的概念，这种架构的关键在于将存储和计算彻底分离，从本质上解决了传统架构的痛点``
+	- snowflake某个方面讨论
+	- 总结数据库目前现状
+	-
+	- 关键特性
+		- SaaS
+		-
+	- Snowflake取得了巨大的商业成功，Snowflake提出了data-warehouse-as-a-service（DaaS）的概念。什么是DaaS呢？简单来说就是：为原生于云端并专注于数据仓库的SaaS服务。Snowflake的云原生特性，这跟很多支持云端服务的数据仓库提供商并不是同一个概念。传统大厂例如Oracle，Teradata，Netezza，以及AWS Redshift，都并非诞生在云原生时代的产品，他们虽然支持云端，但是其产品架构却有自身局限性。Snowflake 销售的数据仓库软件能在亚马逊的云端运行，能为企业提供高性能、易扩张的环境去存储大规模的信息，用以机器学习算法等应用的处理。随着企业数字化深入推进，企业对云的应用程度也越来越深，对数据仓库的需求进一步发生了变化，推动了第四代数据仓库——以 Snowflake 为代表的“云原生数据仓库”的崛起，其特征表现为：高性能（Performance）、高并发
+		- [link](https://zhuanlan.zhihu.com/p/464135327)
+		-
+-

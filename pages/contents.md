@@ -1,0 +1,9 @@
+- {{renderer :tocgen2, *, calc(100vh - 131px)}}
+- {{renderer agenda, task-list}}
+- {{renderer :todomaster}}
+- {{renderer :tocgen2, [[work]], calc(100vh - 135px)}}
+-
+- {{renderer :tocgen2, [[k8s-faq]], calc(100vh - 135px)}}
+- {{renderer :tocgen2, [[k8s-faq]], calc(100vh - 135px)}}
+- {{renderer :tocgen2, [[ingress]], calc(100vh - 135px)}}
+- {{renderer :tocgen2, [[2024-04-05 fri]], calc(100vh - 135px)}}

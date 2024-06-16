@@ -1,0 +1,44 @@
+- ==summary-mysql-conceptions==
+	- {{renderer :tocgen2, [[]], auto, 1}}
+- #### 0. [[表空间]] [[聚簇索引]] [[二级索引]]
+	- 使用 InnoDB 作为存储引擎的表来说，不管是用于存储用户数据的索引（包括[[聚簇索引]]和[[二级索引]]），还是各种系统数据，都是以页的形式存放在表空间中的，而所谓的表空间只不过是 InnoDB 对文件系统上一个或几个实际文件的抽象，也就是说我们的数据说到底还是存储在磁盘上的
+	- DOING [常见review question? ](https://www.cnblogs.com/pengfeilu/p/14537921.html)
+	  :LOGBOOK:
+	  CLOCK: [2023-03-01 Wed 15:06:32]
+	  :END:
+- #### 1. [[mysql两阶段提交]]
+	- 主要解决binlog和redo log的一致性问题，避免主从不一致
+		- 其实总的来说，不论mysql什么时刻crash，最终是commit还是rollback完全取决于MySQL能不能判断出binlog和redolog在逻辑上是否达成了一致。只要逻辑上达成了一致就可以commit，否则只能rollback。
+	- ##### 如何判断[[binlog]]和[[redo log]]是否达成了一致
+		- redo log中油XID 和binlog中的一致就认为逻辑是一致的。
+	- ##### 我们就一起分析一下在[[两阶段提交]]的不同时刻，MySQL 异常重启会出现什么现象。 [#](https://time.geekbang.org/column/article/73161)
+		- 也就是写入 [[redo log]] 处于 prepare 阶段之后、写 binlog 之前，发生了崩溃（crash），由于此时 [[binlog]] 还没写，redo log 也还没提交，所以崩溃恢复的时候，这个事务会回滚。这时候，binlog 还没写，所以也不会传到备库。到这里，大家都可以理解。
+		- [[Binlog]] 写完，[[redo log]] 还没 commit 前发生 crash，那崩溃恢复的时候 MySQL 会怎么处理？
+			- 如果 redo log 里面的事务是完整的，也就是已经有了 commit 标识，则直接提交；
+			- 如果 redo log 里面的事务只有完整的 prepare，则判断对应的事务 binlog 是否存在并完整：
+				- a.  如果是，则提交事务；
+				- b.  否则，回滚事务。
+			- ###### 追问 1：MySQL 怎么知道 binlog 是完整的?
+				- statement 格式的 binlog，最后会有 COMMIT；
+				- row 格式的 binlog，最后会有一个 XID event。
+			- ###### 追问 2：redo log 和 binlog 是怎么关联起来的?
+				- xid关联，如果redo里有commit直接提交， 没有去找
+			- ###### 追问 8：正常运行中的实例，数据写入后的最终落盘，是从 redo log 更新过来的还是从 buffer pool 更新过来的呢？
+				- 如果是正常运行的实例的话，数据页被修改以后，跟磁盘的数据页不一致，称为脏页。最终数据落盘，就是把内存中的数据页写盘。这个过程，甚至与 redo log 毫无关系。
+				- 在崩溃恢复场景中，InnoDB 如果判断到一个数据页可能在崩溃恢复的时候丢失了更新，就会将它读到内存，然后让 redo log 更新内存内容。更新完成后，内存页变成脏页，就回到了第一种情况的状态。
+			- ###### 追问 9：redo log buffer 是什么？是先修改内存，还是先写 redo log 文件 <a class="ask"></a>
+				- 所以，redo log buffer 就是一块内存，用来先存 redo 日志的。也就是说，在执行第一个 insert 的时候，数据的内存被修改了，redo log buffer 也写入了日志。但是，真正把日志写到 redo log 文件（文件名是 ib_logfile+ 数字），是在执行 commit 语句的时候做的。
+- ##### 2.[[double write]]
+	- 由于 InnoDB 和操作系统的页大小不一致，InnoDB 页大小一般为 16k，操作系统页大小为 4k，导致 InnoDB 回写数据到操作系统中，一个页面需要写 4 次，写入过程出现问题无法保持原子性
+	- double write buffer 2M大小，MySQL 将脏数据 flush 到数据文件的时候，先使将脏数据复制到内存中的一个区域（也是 2M），之后通过这个内存区域再分 2 次，每次写入 1MB 到[[系统表空间]]，然后马上调用 `fsync` 函数。 在这个过程中是顺序写，开销并不大，在完成 doublewrite 写入后，再[[#red]]==将数据写入各数据文件文件，这时是离散写入==
+	- 是否一定需要 double write？
+		- 不是，slave可关闭，异常通过中继日志恢复，有些文件系统可以保证partial write失效问题
+	- > 双写缓冲如何恢复数据的？
+		- 双写缓冲区存在的目的就是 Innodb 为了保证 MySQL 数据的[[$red]]==原子性==。在数据库异常关闭的情况下启动时，都会做数据库恢复（redo）操作，恢复的过程中，数据库都会检查页面是不是合法，如果发现一个页面校验结果不一致，则此时会用到双写这个功能
+		- > **写双写缓冲区挂了呢？**
+			- 第一步写到磁盘的双写缓冲区自然有可能失败。假如失败了，MySQL 会根据磁盘上 B+ 树的结构，再配合上 Redo 日志对数据进行恢复。 (这个实际是怎么搞出一个完整的页，b+树上有，加redo就是double write buffer要记录的内容)
+			- > **可以通过 Redo 日志进行恢复，那么为什么还要双写缓冲区？**
+				- Redo 日志记录的是数据页的物理操作：对 XXX 表空间中的 XXX 数据页 XXX 偏移量的地方做了 XXX 更新。如果页都损坏了，是无法进行任何恢复操作的
+				-
+- ##### 3.[[MySQL锁]]
+	-

@@ -1,0 +1,3 @@
+- Cobra 建立在命令、参数和标志这三个结构之上
+	- git clone URL --bare       clone是子命令、URL是命令的参数、bare是标志
+	- hugo server --port=1313   1313是标志的参数，不是命令的参数

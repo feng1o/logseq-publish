@@ -1,0 +1,2 @@
+- https://blog.csdn.net/qq_34555905/article/details/118353802
+- MPP分布式数据库（[[GreenPlum]]/GBase/Vertica/[[Teradata]]）

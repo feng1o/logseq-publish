@@ -1,0 +1,615 @@
+:root{
+  /*--ct-code-font-family: "Fira Code", Monaco, Menlo, Consolas, "COURIER NEW",
+    monospace; */  /*字体暂时不改*/
+  --ct-inline-code-font-size: 0.65em;
+  --ct-inline-code-font-style: inherit;
+}
+
+/*代码块字体大小*/
+.code-editor * {
+    font-size: 95%;
+}
+
+/* 控制最近使用、收藏页面的*/
+.left-sidebar-inner .nav-content-item .header .wrap-th>span {
+    font-size: 12px;
+    font-weight: 600;
+    background: ;
+    color: green;
+}
+.left-sidebar-inner .nav-content-item .header .wrap-th>span:after {
+    content: "";
+}
+/* end 控制最近使用、收藏页面的*/
+
+pre, code {
+  white-space : pre-wrap !important;
+}
+
+html {
+  background-color: #00539F;
+} 
+
+main, header, nav, article, aside, footer, section {
+    background-color: rgba(29, 149, 63, 0.5);
+    /*padding: 1%; 这个1 会导致顶部覆盖一部分,长了一点点*/
+    padding: 0%;
+}
+
+/*影藏query 语句的head ttps://discuss.logseq.com/t/hide-query-table-property-heading/4296 */
+/*:collapsed? true这类消失， 不开启*/
+div:not(#today-queries) > div.custom-query > div > div.content, div:not(#today-queries) > div.custom-query > div > div.initial > div > div.flex {
+  /*display: none */
+}
+
+.hide-query {
+  div:not(#today-queries) > div.custom-query > div > div.content, div:not(#today-queries) > div.custom-query > div > div.initial > div > div.flex {
+  display: none
+}
+}
+
+h1,h2 {
+  margin: 0;
+  padding: 20px 0;
+  color: #00539F;
+  text-shadow: 1px 1px 1px #00539F;
+}
+
+/*2. 页面会有边框
+body {
+  width: auto;
+  margin: 1px  1px  1px  238px;
+  background-color: #FF9500;
+  padding: 5px 10px 10px 10px;
+  borde
+  : 3px solid black;
+}
+*/
+
+.bd-blue {
+    border: 1px solid blue;
+}
+
+a[href="x"] { 
+    font-weight: bold;
+    /*text-decoration:underline;*/
+}  
+
+/*3.字体控制*/
+.indent1 {
+    text-indent: 1em;
+}
+.subw {
+    font-size: 70%;
+    vertical-align: middle;
+    vertical-align: inline;
+}
+
+.subw8 {
+    font-size: 80%;
+    vertical-align: middle;
+}
+
+.subw9 {
+    font-size: 90%;
+    vertical-align: middle;
+}
+
+.underline {
+    text-decoration:underline;
+}
+
+.hide {
+    /*display:block;
+    overflow:hidden;
+    width:0;
+    height:0;*/
+    display:none;
+}
+.gray {
+    color: gray;
+}
+
+.DarkOrchid  {
+    color: #9932CC;
+}
+
+.white {
+    color: white;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: blue;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.bg-yellow {
+    background-color: yellow;
+}
+
+.bg-green {
+    background-color: rgba(29, 149, 63, 0.5);
+    background-color: green;
+}
+
+.weight {
+    font-weight: bold;
+}
+
+.width-3-hide {
+    width:3em;
+    overflow:hidden;
+    /*border: 1px solid blue; */
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    display: inline-block;
+}
+
+/* vertical-align: sub; 会导致行距变大*/
+.width-18-hide {
+    width:15%;
+    overflow:hidden;
+    white-space:nowrap;
+    /*border: 1px solid blue; */
+    text-overflow:ellipsis;
+    display: inline-block;
+}
+
+.width-13-hide {
+    width:13%;
+    /*border: 1px solid blue; */
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    display: inline-block;
+}
+
+.width-55-hide {
+    width:55%;
+    /*border: 1px solid green;*/ 
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    display: inline-flex;
+}
+
+
+.line2-hide {
+    width:50%;
+    /*border: 1px solid green;*/ 
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* autoprefixer: off */
+    -webkit-box-orient: vertical;
+    /* autoprefixer: on */
+}
+
+/*4.伪元素,前后缀*/
+.coffee::after { 
+    text-decoration:underline;
+    width: 4em;
+    content:"🥤";
+}   
+
+.ask::after { 
+    text-decoration:underline;
+    width: 4em;
+    content: "❓";
+}   
+
+.perfect::after { 
+    text-decoration:underline;
+    width: 4em;
+    content:"💯";
+}   
+
+.alg-1stars::after {
+    content:" ❶ ";
+    text-decoration:underline;
+    vertical-align: inline;
+    letter-spacing: 0.202em;
+    color: green;
+    /*background-color: yellow;*/
+}
+
+.alg-1stars::after {
+    content:" ❶ ";
+    text-decoration:underline;
+    vertical-align: inline;
+    letter-spacing: 0.202em;
+    color: green;
+    /*background-color: yellow;*/
+}
+
+.alg-2stars::after {
+    content:" ❷ ";
+    text-decoration:underline;
+    vertical-align: inline;
+    color: #1E90FF;
+    letter-spacing: 0.202em;
+    /*background-color: yellow;*/
+}
+
+
+.alg-3stars::after {
+    letter-spacing: normal;
+    content:" ❸ ";
+    text-decoration:underline;
+    vertical-align: inline;
+    letter-spacing: 0.202em;
+    /*vertical-align: sub;*/
+    color: #FF1493;
+    /*background-color: yellow;*/
+}
+
+.alg-4stars::after {
+    letter-spacing: normal;
+    content:" ❹ ";
+    text-decoration:underline;
+    vertical-align: inline;
+    /*保持和alg after效果一致，不可gai*/
+    letter-spacing: 0.202em;
+    /*vertical-align: sub;*/
+    color: red;
+    /*background-color: yellow;*/
+}
+
+
+.alg-easy::after {
+    content:"_Easy";
+    text-decoration:underline;
+    vertical-align: inline;
+    letter-spacing: 0.016em;
+    font-size:80%;
+    color: #2CB197;
+}
+
+.alg-medium::after {
+    content:"_Medi";
+    text-decoration:underline;
+    vertical-align: inline;
+    letter-spacing: 0.0001em;
+    font-size:80%;
+    color: #F0A431;
+}
+
+.alg-hard::after {
+    content:"_Hard";
+    text-decoration:underline;
+    vertical-align: inline;
+    letter-spacing: 0.0001em;
+    font-size:80%;
+    color: red;
+}
+
+.mediam::after {
+    text-decoration:underline;
+    content:"_*   ";
+}
+
+.apple::after { 
+    text-decoration:underline;
+    content:"🍎";
+}   
+
+.pin::after { 
+    text-decoration:underline;
+    content:"📌";
+}
+
+.ok::after {
+    text-decoration: underline;
+    content: "✅";
+}
+
+/*5.伪类*/
+a:hover {
+    color:red;
+}
+
+/* class是hblack的且hover类后状态*/
+.hblack:hover {
+    background-color: yellow;
+    color:black;
+}
+
+/*6.block 内联盒子*/
+.inline_box {
+    display: inline-flex;
+}
+
+.inline-box {
+    display: inline-flex;
+}
+
+.inline-blk {
+    display: inline-block;
+}
+
+.inblock {
+    margin: 10px;
+    padding: 1px;
+    /*width: 60px;
+    height: 50px;*/
+    background-color: lightgreen;
+    border: 2px solid blue;
+    display: inline-block;
+} 
+
+/*7.继承与控制*/
+.clear {
+    all: unset;
+}
+/*8.背景颜色*/
+.bg-lightgray {
+    background-color: lightgray;
+}
+/* -----------------------------------------toc list ----------------------start -----------*/
+
+/*=========================bullet start==========================*/     
+/*= highlight current path by cannnibalox v20210220 =*/ 
+/* https://discuss.logseq.com/t/css-highlights-current-path-bullets-color/371 */
+
+
+/* !important 否则会导致插件bulletshit覆盖这个效果 */
+.ls-block .bullet{
+    background-color:#dd0707!important; /* hover后的颜色red */
+  	color: red;
+}
+
+/*====== option: (:hover) to (:focus-whithin)高亮选择路径的bullets =======*/
+/* 默认的bullet的颜色,not hover */
+.ls-block:not(:hover) .bullet{
+    background-color:var(--ls-block-bullet-color);
+    background-color: lightgray!important;
+    /*background-color: blue;*/
+}
+
+/* 高亮path */
+.block-children{border-left-color:#037ef3!important;}
+.block-children .block-children{border-left-color:#00c16e!important;}
+.block-children .block-children .block-children{border-left-color:#0cb9c1!important;}
+.block-children .block-children .block-children .block-children{border-left-color:#f48924!important;}
+.block-children .block-children .block-children .block-children .block-children{border-left-color:#f85a40!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#ffc845!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#52565e!important;}
+
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#037ef3!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#00c16e!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#0cb9c1!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#f48924!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#f85a40!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#ffc845!important;}
+.block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children .block-children{border-left-color:#52565e!important;}
+
+.ls-block > .block-children:focus-within {
+    border-left-width: 2px;
+    margin-left: 20px!important;
+    border-left-color:#6a3be4!important;
+}
+
+/* first-child规避第一列头部有个_,打开后有些又没有_*/
+/*  这个暂未生效, 对齐长度有问题*/ 
+/*.blocks-container div:not(:first-child) .ls-block:focus-within::before{ */
+.blocks-container > div:not(:first-child) .ls-block:focus-within::before{
+    content: "";
+    display: inline-block;
+    left: -2px;
+    top: 13px;
+    width: 20px;
+    position: absolute;
+    height: 0;
+    border-bottom: 2px solid #6a3be4;
+    z-index: 1;
+}
+.blocks-container > div:not(:first-child) .ls-block>.flex-row{
+  	position:relative;
+  	z-index:10;
+}
+/*=========================bullet end==========================*/
+
+/* toc gen 加的配置 kef-tocgen-page 对应页面，kef-tocgen-block 对应块，.kef-tocgen-active-block 对应编辑中的块 */
+.kef-tocgen-page {
+  cursor: pointer;
+  /*background-color: #DCDCDC;*/
+  line-height: 1.6;
+  /*border: 1px dashed gray;*/
+}
+.kef-tocgen-block {
+  line-height: 1.4;
+  font-size: 75%;
+  text-decoration:underline;
+  color: #0000FF;
+}
+.kef-tocgen-active-block {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #0001FF;
+}
+/* 无活动页面的时候显示的  比如选中日志*/
+.kef-tocgen-noactivepage::before {
+  content: "🫥";
+}
+/* toc gen end */
+
+/* pdf 阅读调整，主要是改前面的icon，其他的可以屏蔽避免新特性问题*/
+.tie-pdf-highlight::before {
+  content: "📌 ";
+}
+
+.block-content[data-type=annotation] .prefix-link {
+  display: inline-flex;
+  align-items: center;
+  padding-right: 4px; /*文字距离跳转的链接页面pxx距离*/
+  cursor: alias;
+  color: var(--ls-link-ref-text-color);
+}
+
+.block-content[data-type=annotation] .prefix-link:before {
+  content: "📌 ";
+  /*@apply tie tie-pdf-highlight pr-1 opacity-80;*/
+  color: var(--ls-secondary-text-color);
+}
+
+.block-content[data-type=annotation] [data-hl-type=area] {
+  display: flex;
+  margin-bottom: 5px; /*图片后面距离*/
+  flex-direction: column;
+}
+
+.block-content[data-type=annotation] [data-hl-type=area] .prefix-link {
+  display: inline;
+}
+
+.block-content[data-type=annotation] [data-hl-type=area] .hl-page {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 85%;
+}
+
+.block-content[data-type=annotation] [data-hl-type=area] .hl-page > label {
+  flex: 1;
+  cursor: text;
+}
+
+.block-content[data-type=annotation] .hl-area {
+  @apply relative;
+  display: inline-block;
+  cursor: text;
+  border: 0.1px solid #eee; /*图片border*/
+  border-radius: 4px; /*控制图片*/
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.block-content[data-type=annotation] .hl-area img {
+  margin: 0;
+  box-shadow: none;
+  max-width: 100%;
+  max-height: 420px;
+  cursor: alias;
+}
+
+.ls-hl-colored .block-content[data-hl-color=green] .prefix-link:before {
+  content: "📌 ";
+  /*@apply tie tie-pdf-highlight pr-1;*/
+  color: var(--color-green-500);
+}
+
+.ls-hl-colored .block-content[data-hl-color=purple] .prefix-link:before {
+  content: "📌 "; 
+  /*@apply tie tie-pdf-highlight pr-1;*/
+  color: var(--color-purple-500);
+}
+
+.ls-hl-colored .block-content[data-hl-color=blue] .prefix-link:before {
+  content: "📌 "; /* https://tabler-icons.io/i/pin */
+  /*@apply tie tie-pdf-highlight pr-1; */
+  color: var(--color-blue-500);
+}
+
+.ls-hl-colored .block-content[data-hl-color=yellow] .prefix-link:before {
+  content: "📌 "; /* https://tabler-icons.io/i/pin */
+  /*@apply tie tie-pdf-highlight pr-1;*/
+  color: var(--color-yellow-400); /*会选择对应颜色，比如加入字*/
+}
+
+.ls-hl-colored .block-content[data-hl-color=red] .prefix-link:before {
+  content: "📌 ";
+  /*@apply tie tie-pdf-highlight pr-1;*/
+  color: var(--color-red-500);
+}
+/* end pdf 这里内容最后的图标外，前台的可删除*/
+
+/* logseq-wrap */
+span[data-ref="$sub8"],
+span[data-ref="#sub8"], /*#会改bg*/
+span[data-ref="$sub8-blue"],
+span[data-ref="$subx"], /*#会改bg*/
+span[data-ref="$sub8-red"],
+span[data-ref="$sub8-gray"] {
+  display: none;
+}
+
+span[data-ref="$sub8"] + mark {
+  color: unset !important; /*bulue*/
+  background: unset !important;
+  padding: 0;
+  font-size: 80%;
+  vertical-align: middle;
+  border-radius: 0;
+}
+
+span[data-ref="$sub8-blue"] + mark {
+  color: #00f !important; /*bulue*/
+  background: unset !important;
+  padding: 0;
+  font-size: 80%;
+  vertical-align: middle;
+  border-radius: 0;
+}
+
+span[data-ref="$sub8-red"] + mark {
+  color: red !important;
+  /*text-decoration:underline;*/
+  background: unset !important;
+  padding: 0;
+  font-size: 80%;
+  vertical-align: middle;
+  border-radius: 0;
+}
+
+span[data-ref="$sub8-gray"] + mark {
+  color: gray !important;
+  /*text-decoration:underline;*/
+  background: unset !important;
+  padding: 0;
+  font-size: 80%;
+  vertical-align: middle;
+  border-radius: 0;
+}
+/* logseq-wrap end */
+
+/* 修改search展示*/
+.ui__list-item-highlighted-span {
+    background-color: Moccasin;
+    background-color: YellowGreen;
+    background-color: yellow;
+    color: blue;
+    font-weight: bold-x;
+
+}
+/* 修改search end */
+
+/* 控制搜藏页、最近使用--导航栏前图标颜色 -- start*/
+.left-sidebar-inner .nav-content-item .header .wrap-th>span {
+    color: red;
+    /*background-color: yellow;*/
+}
+
+/* 整个框背景 */
+.left-sidebar-inner .nav-content-item .header {
+    /*background-color: unset;*/
+}
+
+/* 收藏页面 -- 导航字体 */
+#left-sidebar > div > div > div.nav-contents-container.flex.flex-col.gap-1.pt-1 > div.nav-content-item.favorites.is-expand.has-children > div > div.header.items-center > div.a > a > strong {
+    font-size:  90%; 
+    color: blue;
+}
+
+/* 最近使用 -- 导航字体 */
+#left-sidebar > div > div > div.nav-contents-container.flex.flex-col.gap-1.pt-1 > div.nav-content-item.recent.is-expand.has-children > div > div.header.items-center > div.a > a > strong {
+    font-size: 90%;
+    color: blue;
+}
+/* 控制搜藏页、最近使用--导航栏前图标颜色 -- > end*/

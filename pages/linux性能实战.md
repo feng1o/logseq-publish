@@ -1,0 +1,3 @@
+- [soft lockup](https://blog.csdn.net/armlinuxww/article/details/105027322)
+	- 并不是说一个死循环、或者某段code跑了很久！！！
+	- 针对单个cpu、发生的cpu上20s(默认)没有调度切换。 只要让一个cpu在20s内都不发生进程切换，就会触发

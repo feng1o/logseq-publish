@@ -1,0 +1,2 @@
+- Flink 有两种关系型 API 来做流批统一处理：Table API 和 SQL； 它可以用一种非常直观的方式来组合使用选取、过滤、join 等关系型算子
+- ![image.png](../assets/image_1666086047299_0.png){:height 188, :width 524}

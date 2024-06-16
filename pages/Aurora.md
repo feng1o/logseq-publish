@@ -1,0 +1,14 @@
+- [Aurora和Tidb对比](https://mp.weixin.qq.com/s?__biz=MzkwOTIxNDQ3OA==&mid=2247533409&idx=1&sn=3c6b165d4c8d58c18661d5b8aefd8535&source=41#wechat_redirect) 了解其
+  id:: 62a6e050-7ac7-4e5e-bc25-57bfa3845c7d
+	- [zhihu对比讨论](https://www.zhihu.com/question/56669587) 从架构上说，TiDB是share-nothing，Aurora是share-disk，两种架构的不同前面几位大牛说得很清楚了，这里从使用维度做下比较： 1. 兼容性：Aurora是基于MySQL或PostgreSQL的开源版本，其改动主要集中在存储层面，不说100%兼容（比如tablespace等涉及存储层面的功能还是会有不兼容的情况），但至少和现有公有云上的数据库产品比，基本完全一致。而TiDB是完全重写的分布式SQL查询引擎，要想完全兼容一个运行了这么多年的开源数据库，基本是不可能的。 2. 写扩展性：在Multi-Master正式出来前，Aurora的写扩展能力还是受到单机限制。Aurora的Multi-Master和TiDB都采用乐观事务模型，也就是在事务提交时才进行冲突检测和解决。两者在冲突较少的情况下，都具有优秀的写扩展能力。Aurora的问题在于如何将冲突粒度控制得更细（从页级到行级），而TiDB的问题在于其为了实现全局事务一致性，引入了Placement Driver，整个集群的扩展能力受限于PD的处理能力。 3. 全局一致性：主从模式下，Aurora的从机是有延迟的，讨论其一致性没有意义。而Aurora的Multi-Master从目前透露的资料看，其没有全局事务管理模块和分布式锁机制，因此其不具有全局事务一致性，但是能保证写事务的原子性。而TiDB通过引入Placement Driver实现了全局一致的时间戳，进而结合分布式事务实现了全局一致性。 4.  AP能力：Aurora的SQL引擎还是单机的，没有分布式SQL，但是目前也通过Parallel Process实现了一些简单的算子下推。TiDB号称分布式SQL，其实本质上也只是实现了一些算子的下推，整体上和Aurora的Parallel Process差别不大。此外TiDB在SQL层针对一些轻量级的AP场景进行了流水线等优化，减少内存占用，缓解OOM的发生。但本质上，二者对于一个复杂查询的处理能力，都受限于SQL节点的单机处理能力，都不算分布式查询引擎（MPP架构才算）。
+	-
+	- [zhihu如何评价polardb](https://www.zhihu.com/question/63987114/answer/244520478)
+	- AWS的RDS一开始就是架设在它的虚拟机产品EC2之上的，使用的存储是云盘EBS
+	- Aurora架构的最大亮点是，存储节点具有将redolog转换为innodb page的能力
+	- Aurora的存储多副本是通过quorum机制来实现的，Aurora是六副本，也就是说，需要计算节点向六个存储节点分别写六次，这里其实计算节点的网络开销又上去了，而且是发生在写redolog这种关键路径上;
+	- 而PolarDB是采用基于RDMA实现的ParallelRaft技术来复制数据，计算节点只要写一次I/O请求到PolarStore的Leader节点，由Leader节点保证quorum写入其他节点，相当于多副本replication被offload到存储节点上。
+	- PolarDB是Share Disk。
+	- Aurora是Share Storage
+		- PolarDB这种ShareDisk架构必须要借助RDMA这种非常强的硬件，否则扩展性就是渣渣。Aurora的路子不一样，通过各种努力来降低网络传输量(Log Structured Storage)，不依赖特殊硬件
+		- Aurora是计算引擎/存储引擎 分离。PolarDB是 计算/存储介质 的分离。
+	-

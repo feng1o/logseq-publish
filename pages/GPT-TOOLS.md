@@ -1,0 +1,12 @@
+### gpt-tool-list
+	- pot(派了个萌的翻译器) 划词翻译，支持多种翻译引擎，其中 deepl 的免费版用了逆向 deepl 客户端的 api，也支持用 open ai key
+	- deepl api kay 淘宝10元一个，可以翻书翻网页  (缺点：运气好能一直用，运气不好第二天就挂)
+- GPT的二道贩子API贩卖那个平台最值得信赖？不想用虚拟货币+dupay了
+- [poe-api-wrapper](https://zhuanlan.zhihu.com/p/677595969)  一个 Python API 接口库，采用 Httpx 技术。使用它，你可以通过 API 接口免费连接到 ChatGPT、DALLE、Claude、Mistral、Gemini 等多种服务
+	- Poe里的机器人特别多，除了官方的，我们还可以用第三方建立的，只要设置好机器人的名字就行。
+	- 1. 本文深入探讨了Poe API的高效应用及其在各种场景下的实际价值。
+	- 2. 通过poe-api-wrapper，我们不仅可以批量生成AI绘图和文本，还能与多种AI模型如ChatGPT、Claude、DALL-E等进行交互。
+	- 3. 实际案例涵盖了教程编写、小说创作、批量写作、批量检索等多个方面，展示了Poe API在提高工作效率和创意表达方面的巨大潜力。
+	- 4. 此外，文章还探讨了Poe平台上第三方机器人的使用和机器人群聊的趣味性。
+- https://speechify.com/  english
+-

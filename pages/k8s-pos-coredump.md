@@ -1,0 +1,1 @@
+- [# 统一收集 kubernetes worker 节点上所产生的 coredump 文件并报警](https://lework.github.io/2021/10/20/k8s-coredump/)

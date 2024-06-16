@@ -1,0 +1,27 @@
+- - crd去看mysql operator的功能与实现
+- Operator 应该支持的功能：install/recycle、backup、upgrade、可观测性、对外暴露service
+- #.kanban
+	- Oracal mysql operator
+	  background-color:: yellow
+		- 5.7 (不稳定 官方不推荐) 8.0
+		- replication:  MySQL Group Replication
+		- 支持升级(Inplace不支持)
+		- 提供 mysqldump（不支持其他备份工具）配置定时备份，备份文件上传远程存储，目前仅实现了 AWS S3 接口
+		- 对外依赖(无）
+		- operator部署方式:  Helm chart
+		- Operator + sidecar
+	- Presslabs mysql operator
+	  background-color:: green
+		- 5.7 8.0
+		- replication: m-s
+		- 支持升级(inplace不支持）
+		- xtracbackup、支持远程备份rclone
+		-
+		- 依赖： orchestrator （orchestrator 依赖 mysql / sqlite）
+		- operator部署方式: Helm chart
+		- Operator + sidecar
+- myql cluster cr 创建后operator会创建mysql statefulset，由statefulset负责创建并管理mysql pod。
+- pod里的init容器负责从健康的节点备份数据，并执行prepare backup。如果是master节点第一次启动不需要备份数据，但是可能是从s3获取备份数据恢复mysql集群。mysql容器启动后，orch controller会将mysql节点加入到orchestrator中管理，并且通过orchestrator服务获取集群的健康状态，更新mysqlcluster 或者node (mysql pod）status， node controller会感知到，进行change master等操作。
+- sidecar容器是一个mysql数据备份和传输的容器，第一个从节点向master pod的sidecar容器发从backup请求，master pod的sidecar容器先执行“xtrabackup --backup”，然后把备份数据传给从pod。
+- pt-heartbeat 主从复制延迟的监控  在 mysql 中主要提供监控的作用。 pt-kill  kill 大事务
+- orchestrator服务负责故障恢复  集群共用。

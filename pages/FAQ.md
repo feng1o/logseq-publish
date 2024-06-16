@@ -1,0 +1,23 @@
+#### 如何通过域名来访问一个服务
+	- 对于普通 service，可以访问：<service-name>.<namespace>，例如：rds-zookeeper.default
+	- 对于 headless service，访问指定 pod：<pod-name>.<service-name>.<namespace>，例如：rds-mysql-0.rds-mysql.rds
+- #### 通过域名访问服务时无法解析
+	- 检查 service 是否存在
+	- 查看 service 后端时候获取到相应的 endpoints：kubectl get endpoint <service-name>，如果没有，检查 label 是否配置错误
+	- Core dns IP 怎么看：kubectl get svc -n kube-system
+	- 检查 pod 内的 /etc/resolve.conf文件，nameserver 和 search 是否正常。当使用 hostnetwork 模式启动 pod 的时候，这个文件可能会直接使用宿主机的配置，可以配置dnsPolicy: ClusterFirstWithHostNet来使用 k8s 的 DNS 配置，完整配置：
+- #### Pod 处于 pending 状态
+	- 查看调度信息：`kubectl describe pod <pod-name>` 可看到调度信息，一般 pending 状态的 pod 都是因为节点不可用导致，如磁盘不够 disk-pressure，cpu、memory 不足等
+	- `kubectl describe node <node-name>` 可以查看节点情况，重点关注
+		- taints字段。在磁盘空间不足等一些情况下，k8s 会给 node 打上形如 Taints:  node.kubernetes.io/disk-pressure:NoSchedule的信息。对于有污点 taints的节点，只有配置了污点容忍的 pod 才能调度到这台节点
+		- cpu/memory 使用情况
+	- 查看节点是否被标记为不可调度
+	- 如果确认有节点可以调度，且 describe 出来没有调度错误，需要考虑 scheduler 是否有问题，可以查看调度器日志等信息
+	- kubectl top node 可以看集群里所有节点的 cpu/memory 信息
+- #### 禁止调度一台节点
+	- 在进行亲和性测试的时候可能想要让某台节点不可调度
+	- kubectl cordon <node-name> 禁止调度
+	- kubectl uncordon <node-name> 恢复调度
+- #### 一个镜像的同一个 tag，拥有多个版本，怎么使用最新的
+	- 这种情况一般发生在自己开发测试的时候，会自己反复把一个镜像打到同一个标签
+	- 可以配置镜像拉取策略为 Always： imagePullPolicy

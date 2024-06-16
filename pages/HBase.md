@@ -1,0 +1,1 @@
+- Hbase是一种在Hadoop之上的NoSQL的Key/vale数据库，底层依靠HDFS进行数据存储。

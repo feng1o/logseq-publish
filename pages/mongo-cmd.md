@@ -1,0 +1,3 @@
+- ```
+  db.serverStatus().connections
+  ```

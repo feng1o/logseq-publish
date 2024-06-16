@@ -1,0 +1,4 @@
+- > 文件存储也称为文件级存储或基于文件的存储，是一种分层存储方法，用于在计算机硬盘驱动器或网络连接存储 (NAS) 设备上组织和存储数据
+- [PFS和NFS区别](https://www.yanrongyun.com/zh-cn/blogs/parallel-vs-distributed-nfs-file-storage)
+- [[GPFS]]
+	- GPFS 设备是一个可被系统挂载的文件设备，由 NSD 创建而成，可以并行的同时挂载在多个节点上。

@@ -1,0 +1,13 @@
+- <a class="apple"  href='https://www.bilibili.com/video/BV1Vt411X7JF?zw'>北大课程基础</a>
+- 大纲
+	- [[密码学]]
+		- hash函数三特性：①实践不碰撞 ②不可逆 ③蛮力解； SHA256 secure hash algorithm 256
+	- [[bitcoin数据结构]]
+	- [[共识协议和系统实现]]
+	- [[挖矿算法和难度调整]]
+	- 比特币脚本
+	- 软硬分叉
+	- 匿名和隐私保护
+-
+- 区块图
+	- dsg

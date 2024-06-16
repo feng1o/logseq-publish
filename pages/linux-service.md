@@ -1,0 +1,4 @@
+- unscd service
+	- > systemctl  restart unscd.service  重新加载dns等
+	-
+	-

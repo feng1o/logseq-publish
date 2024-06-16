@@ -1,0 +1,4 @@
+- `ping x.x.x.x -s 1422 -M do`. 不允许分片、可探测本地MTU分片是否过大、 设置`ifconfig eth0 mtu xxx`
+- [一次MTU导致的rds访问故障？](https://developer.jdcloud.com/article/1561)    [[$sub8-blue]]==mut设置过大，在三次握手时协商的MSS过大，又由于不允许分片，中间有个LB丢失了ICPM差错报文(在不允许分片、又超过MTU时会丢弃，返回一个ICMP，发送端收到ICMP就知道调小MSS重发)，导致消息直接丢了==  [mtu问题分析详细](https://blog.51cto.com/gingerbeer/1970602)
+	- 但在YnRkCg==里，ecs的MTU > 母鸡的MTU时候，yum源不通，比如ping  指定1500字节不允许分片就会失败， 原因呢？
+- 相同链路下，不同ISO层级也存在不同MTU值，原则上低层级的MTU值是大于高层级的MTU值，为包含关系。

@@ -1,0 +1,3 @@
+- [2.0 oceanus上云](https://LWlrLXdhLWNtLQo=/pages/viewpage.action?pageId=1174282303)
+- 基础概念
+	- oceanus上的任务分为3大类：画布（基于flink的table api），sql（基于flink sql），jar（用户自己编写程序，具有更高的自由度）。

@@ -1,0 +1,8 @@
+- ((62b144ad-fa7d-43a4-9758-19032dd31044))
+-
+- [posix_fadvise清除缓存的误解和改进措施](https://blog.yufeng.info/archives/1917)  -- [vmtouch-系统pagecache查看和操纵器](http://blog.yufeng.info/archives/1903)
+-
+- [[Anonymous Pages]]  [内存分解](https://note.wcoder.com/linux/memory.md)   [[$red]]==/proc/meminfo==
+-
+-
+-
